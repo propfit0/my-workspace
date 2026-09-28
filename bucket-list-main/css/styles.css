@@ -1,0 +1,267 @@
+/* 커스텀 스타일 (Tailwind CSS 보완용) */
+
+:root {
+    --gradient-start: #667eea;
+    --gradient-mid: #764ba2;
+    --gradient-end: #f093fb;
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+}
+
+/* ==============================
+   배경 그라데이션
+   ============================== */
+body {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%) !important;
+    background-attachment: fixed;
+}
+
+/* 헤더 - 컬러 배경 위에서 잘 보이도록 대비 조정 + 여백 확대 */
+header {
+    margin-bottom: 3rem !important;
+}
+
+header h1 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    letter-spacing: -0.02em;
+}
+
+header p {
+    color: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* ==============================
+   카드 스타일 (통계 / 입력 / 필터 컨테이너)
+   ============================== */
+.bg-white.rounded-lg.shadow-md:not(.bucket-item) {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 1.25rem !important;
+    padding: 1.75rem !important;
+    margin-bottom: 2rem !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* 필터 버튼 활성화 스타일 */
+.filter-btn {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.filter-btn:hover {
+    background-color: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--accent-blue), var(--gradient-mid));
+    color: white;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+/* 입력 폼 제출 버튼 - 호버시 살짝 떠오르는 효과 */
+#bucketForm button[type="submit"] {
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+#bucketForm button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(59, 130, 246, 0.45);
+}
+
+/* ==============================
+   버킷 리스트 항목 카드
+   ============================== */
+.bucket-item {
+    animation: slideIn 0.3s ease-out;
+    border-radius: 1rem !important;
+    padding: 1.25rem 1.5rem !important;
+    gap: 1rem !important;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-left: 4px solid var(--accent-blue);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.bucket-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14) !important;
+}
+
+/* 완료된 항목은 초록 포인트 컬러로 구분 */
+.bucket-item:has(.bg-green-500) {
+    border-left-color: var(--accent-green);
+    background: linear-gradient(to right, rgba(34, 197, 94, 0.06), rgba(255, 255, 255, 0.95) 20%) !important;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 항목 사이 간격 확대 */
+#bucketListContainer > * + * {
+    margin-top: 1rem !important;
+}
+
+/* 완료된 항목 스타일 */
+.bucket-item .line-through {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* 체크박스 호버 효과 */
+.bucket-item button:first-child:hover {
+    transform: scale(1.1);
+}
+
+/* 수정/삭제 버튼 호버시 살짝 떠오르는 효과 */
+.bucket-item button:not(:first-child):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 스크롤바 스타일 (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-mid));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--gradient-mid), var(--gradient-end));
+}
+
+/* 모바일 반응형 */
+@media (max-width: 640px) {
+    .bucket-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem !important;
+    }
+
+    .bucket-item > div:last-child {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+
+    .filter-btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .bg-white.rounded-lg.shadow-md:not(.bucket-item) {
+        padding: 1.25rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+}
+
+/* 입력 필드 포커스 효과 */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* 버튼 클릭/호버 공통 효과 */
+button {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* 빈 상태 메시지 - 카드 스타일 적용 */
+#emptyState {
+    animation: fadeIn 0.5s ease-in;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 1.25rem;
+    padding: 3rem 2rem !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 모달 백드롭 애니메이션 */
+#editModal {
+    animation: fadeIn 0.2s ease-in;
+}
+
+#editModal > div {
+    animation: scaleIn 0.2s ease-out;
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 통계 숫자 애니메이션 */
+#totalCount, #completedCount, #progressCount, #completionRate {
+    transition: all 0.3s ease;
+}
+
+/* 다크 모드 지원 (선택사항) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%) !important;
+    }
+
+    .bg-white.rounded-lg.shadow-md:not(.bucket-item),
+    .bucket-item,
+    #editModal > div {
+        background: rgba(31, 41, 55, 0.92) !important;
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    #emptyState {
+        background: rgba(31, 41, 55, 0.85);
+    }
+
+    #emptyState p {
+        color: #9ca3af !important;
+    }
+
+    .text-gray-800 {
+        color: #f3f4f6;
+    }
+
+    .text-gray-600 {
+        color: #d1d5db;
+    }
+
+    .border-gray-300 {
+        border-color: #4b5563;
+    }
+}
