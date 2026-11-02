@@ -241,9 +241,28 @@ class MainWindow(QMainWindow):
             self._fill_filters()
             self.refresh()
 
+    def _notice_marker(self):
+        """'안내했음' 표시 파일. 데이터 파일과 같은 폴더에 두며, 데이터 안(DB)의 표시와는 별개다.
+
+        백업을 복원해 DB 안의 표시가 예전 값으로 되돌아가도 안내가 다시 뜨지 않게 한다.
+        """
+        return self.store.path.parent / "복구키안내완료.txt"
+
     def _first_run_notice(self):
-        if not self.repo.get_setting("first_run_notice", False):
+        """복구 키 안내는 데이터를 처음 만든 직후 단 한 번만 보여 준다."""
+        flag = self.repo.get_setting("first_run_notice", False)
+        marker = self._notice_marker()
+        if marker.exists():
+            if flag:  # DB 안의 표시가 되살아난 경우(예: 옛 백업 복원) 정리만 하고 안내하지 않는다
+                self.repo.set_setting("first_run_notice", False)
             return
+        if not flag:
+            return
+        # 안내창을 띄우기 '전에' 먼저 기록한다(창을 닫거나 프로그램이 꺼져도 다시 뜨지 않도록)
+        try:
+            marker.write_text("복구 키 보관 안내를 이미 표시했습니다. 이 파일을 지우지 마세요.\n", encoding="utf-8")
+        except OSError:
+            pass
         self.repo.set_setting("first_run_notice", False)
         text = "\n".join([
             "이 프로그램은 비밀번호 없이 열립니다. 데이터는 이 PC의 Windows 계정으로 암호화되어 있습니다.",
